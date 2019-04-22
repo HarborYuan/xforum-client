@@ -55,7 +55,7 @@
               </div>
               <div>
                 <br>
-                <a href="./Forget.vue">Forget Password?</a>
+                <a href="#/forget">Forget Password?</a>
               </div>
 
               <div>

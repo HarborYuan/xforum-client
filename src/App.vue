@@ -1,4 +1,5 @@
 import Avatar from 'vue-avatar'
+
 <template>
   <div id="app">
     <div>

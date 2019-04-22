@@ -4,6 +4,7 @@ import Hello from '@/components/Hello';
 import Welcome from '@/components/Welcome';
 import Signup from '@/components/Signup';
 import Signin from '@/components/Signin';
+import Forget from '@/components/Forget';
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/signin',
       name: 'Signin',
       component: Signin,
+    },
+    {
+      path: '/forget',
+      name: 'forget',
+      component: Forget,
     },
   ],
 });

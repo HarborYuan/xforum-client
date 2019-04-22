@@ -3,6 +3,7 @@
     <div>
       <br>
       <h1>Sign Up</h1>
+      <p  v-if="fail_flag">Some kinds of error</p>
       <br>
     </div>
     <div class="col-md-6 offset-md-3">
@@ -126,16 +127,20 @@
           birthday: '',
         },
         show: true,
+        fail_flag: false,
       };
     },
     methods: {
       onSubmit(evt) {
         evt.preventDefault();
         // eslint-disable-next-line no-alert;
-        alert(JSON.stringify(this.form));
         axios.post('/api/signup/', JSON.stringify(this.form))
           .then((response) => {
-            alert(response.data);
+            if (response.data === 'Success') {
+              window.location.href = '#/';
+            } else {
+              this.fail_flag = true;
+            }
           })
           .catch((error) => {
             console.log(error.data);
