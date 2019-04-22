@@ -11,7 +11,7 @@
           <b-form
             @submit="onSubmit"
             @reset="onReset"
-            @select="onSelect"
+            @change="onChange"
 
           >
             <b-form-group
@@ -22,11 +22,10 @@
               class="mb-2"
             >
               <b-form-radio-group
-                type="select"
                 class="pt-2"
                 :options="[
-              { value: 0, text: 'E-mail' },
-              { value: 1, text: 'Username' },
+              { value: 1, text: 'E-mail' },
+              { value: 0, text: 'Username' },
             ]"
                 v-model="form.type"
               ></b-form-radio-group>
@@ -70,7 +69,6 @@
               class="mb-0"
             >
               <b-button type="submit" variant="primary">Submit</b-button>
-              <b-button type="reset" variant="danger">Reset</b-button>
             </b-form-group>
           </b-form>
         </div>
@@ -96,10 +94,7 @@
         form: {
           email: '',
           username: '',
-          password: '',
-          gender: null,
-          birthday: '',
-          type: 0,
+          type: null,
         },
         show_username: false,
         show_email: false,
@@ -132,7 +127,7 @@
           this.show = true;
         });
       },
-      onSelect(evt) {
+      onChange(evt) {
         evt.preventDefault();
         if (this.form.type === 0) {
           this.show_username = true;

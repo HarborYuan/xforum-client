@@ -149,6 +149,7 @@
       onReset(evt) {
         evt.preventDefault();
         // Reset our form values
+        this.logined = true;
         this.form.email = '';
         this.form.username = '';
         this.form.gender = null;

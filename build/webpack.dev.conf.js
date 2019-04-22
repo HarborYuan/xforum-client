@@ -1,5 +1,3 @@
-import img from '../src/assets/logo.png'
-
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
