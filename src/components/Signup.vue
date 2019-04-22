@@ -21,7 +21,7 @@
             >
               <b-form-input
                 id="input-username"
-                v-model="form.name"
+                v-model="form.username"
                 type="text"
                 placeholder="Enter your username"
                 required
@@ -120,7 +120,7 @@
       return {
         form: {
           email: '',
-          name: '',
+          username: '',
           password: '',
           gender: null,
           birthday: '',
@@ -135,17 +135,17 @@
         alert(JSON.stringify(this.form));
         axios.post('/api/signup/', JSON.stringify(this.form))
           .then((response) => {
-            alert(response);
+            alert(response.data);
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error.data);
           });
       },
       onReset(evt) {
         evt.preventDefault();
         // Reset our form values
         this.form.email = '';
-        this.form.name = '';
+        this.form.username = '';
         this.form.gender = null;
         this.form.birthday = '';
         this.form.password = '';
