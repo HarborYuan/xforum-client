@@ -3,7 +3,7 @@
     <div>
       <br>
       <h1>Sign Up</h1>
-      <p  v-if="fail_flag">Some kinds of error</p>
+      <p  v-if="fail_flag" style="color: #dc3545">Some kinds of error</p>
       <br>
     </div>
     <div class="col-md-6 offset-md-3">
@@ -25,8 +25,15 @@
                 v-model="form.username"
                 type="text"
                 placeholder="Enter your username"
+                @input="onUsernameChange"
                 required
               ></b-form-input>
+              <b-form-invalid-feedback
+                id = "usernameValidated"
+                v-bind:state="isUsernameValid"
+              >
+                Username Taken!
+              </b-form-invalid-feedback>
             </b-form-group>
             <b-form-group
               label-cols-sm="5"
@@ -54,15 +61,21 @@
                 v-model="form.email"
                 type="email"
                 placeholder="Enter your E-mail"
+                required
+                @input="onEmailChange"
               ></b-form-input>
-
+              <b-form-invalid-feedback
+                id="passwordValidated"
+                v-bind:state="isEmailValid"
+                >
+                Email Registered!
+              </b-form-invalid-feedback>
             </b-form-group>
             <b-form-group
               label-cols-sm="5"
               id="input-group-gender"
               label="Gender:"
               label-for="input-gender"
-
               class="mb-2"
             >
               <b-form-radio-group
@@ -73,6 +86,7 @@
               { value: 2, text: 'Other' },
             ]"
                 v-model="form.gender"
+                required
               ></b-form-radio-group>
             </b-form-group>
             <b-form-group
@@ -80,13 +94,14 @@
               id="input-group-birthday"
               label="Birthday:"
               label-for="input-birthday"
-
+              required
               class="mb-3"
             >
               <b-form-input
                 id="input-birthday"
                 v-model="form.birthday"
                 type="date"
+                required
               ></b-form-input>
             </b-form-group>
 
@@ -109,16 +124,27 @@
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card>
+    <b-card class="mt-3" header="response">
+      <pre class="m-0">{{ responses }}</pre>
+    </b-card>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
+  import app from '../App';
 
   export default {
     name: 'Signup',
     data() {
       return {
+        // form: {
+        //   email: 'Bob@bobindustry.co',
+        //   username: 'Bob',
+        //   password: 'password',
+        //   gender: 0,
+        //   birthday: '9102-01-01',
+        // },
         form: {
           email: '',
           username: '',
@@ -128,23 +154,34 @@
         },
         show: true,
         fail_flag: false,
+        responses: null,
+        isUsernameValid: 'valid',
+        isEmailValid: 'valid',
       };
     },
     methods: {
       onSubmit(evt) {
         evt.preventDefault();
-        // eslint-disable-next-line no-alert;
-        axios.post('/api/signup/', JSON.stringify(this.form))
-          .then((response) => {
-            if (response.data === 'Success') {
-              window.location.href = '#/';
-            } else {
+        // this.onEmailChange(evt);
+        // this.onUsernameChange(evt);
+        // console.log(this.isUsernameValid);
+        // console.log(this.isEmailValid);
+        if (this.isUsernameValid === 'valid' && this.isEmailValid === 'valid') {
+          console.log('まだ？');
+          axios.post(`${app.baseURL}/api/signup/`, JSON.stringify(this.form))
+            .then((response) => {
+              console.log(response);
+              this.responses = 'response';
+              if (response.data === 'U100') {
+                this.responses = response.data;
+              }
+            })
+            .catch((error) => {
               this.fail_flag = true;
-            }
-          })
-          .catch((error) => {
-            console.log(error.data);
-          });
+              console.log(error);
+              // this.responses = error;
+            });
+        }
       },
       onReset(evt) {
         evt.preventDefault();
@@ -160,6 +197,47 @@
         this.$nextTick(() => {
           this.show = true;
         });
+      },
+      onUsernameChange(evt) {
+        // evt.preventDefault();
+        console.log(evt);
+        axios.post(`${app.baseURL}/api/checkusername/`, JSON.stringify(this.form))
+          .then(
+            (response) => {
+              console.log(response);
+              if (response.data === 'C100-1') {
+                console.log(response.data);
+                this.isUsernameValid = 'invalid';
+              } else if (response.data === 'C100-0') {
+                this.isUsernameValid = 'valid';
+              }
+            },
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            },
+          );
+      },
+      onEmailChange(evt) {
+        // evt.preventDefault();
+        console.log(evt);
+        axios.post(`${app.baseURL}/api/checkemail/`, JSON.stringify(this.form))
+          .then(
+            (response) => {
+              console.log(response);
+              if (response.data === 'C100-1') {
+                this.isEmailValid = 'invalid';
+              } else if (response.data === 'C100-0') {
+                this.isEmailValid = 'valid';
+              }
+            },
+          )
+          .catch(
+            (error) => {
+              console.log(error);
+            },
+          );
       },
 
     },

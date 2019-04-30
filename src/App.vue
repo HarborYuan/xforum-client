@@ -15,7 +15,7 @@ import Avatar from 'vue-avatar'
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto" v-if="logined">
+          <b-navbar-nav class="ml-auto" v-if= false>
             <b-nav-form>
               <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
               <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
@@ -47,7 +47,7 @@ import Avatar from 'vue-avatar'
 <script>
 export default {
   name: 'app',
-  logined: false,
+  baseURL: 'http://127.0.0.1:9999',
 };
 </script>
 

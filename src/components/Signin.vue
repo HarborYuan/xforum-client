@@ -79,14 +79,17 @@
 
 <script>
   import axios from 'axios';
+  import baseURL from '../App';
 
   export default {
     name: 'Signup',
     data() {
       return {
         form: {
-          username: '',
-          password: '',
+          username: 'Bob',
+          password: 'password',
+          response: '',
+          base: baseURL.baseURL,
         },
         show: true,
       };
@@ -94,15 +97,15 @@
     methods: {
       onSubmit(evt) {
         evt.preventDefault();
-        // eslint-disable-next-line no-alert;
-        alert(JSON.stringify(this.form));
-        axios.post('/api/signup/', JSON.stringify(this.form))
-          .then((response) => {
-            alert(response.data);
-          })
-          .catch((error) => {
-            console.log(error.data);
-          });
+        axios.post(`${baseURL.baseURL}/api/signin/`, JSON.stringify(this.form))
+        .then((response) => {
+          this.form.response = 'Hello';
+          this.form.res = response;
+        })
+        .catch((error) => {
+          this.form.response = error;
+          console.log(error.data);
+        });
       },
       onReset(evt) {
         evt.preventDefault();
