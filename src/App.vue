@@ -15,7 +15,7 @@ import Avatar from 'vue-avatar'
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto" v-if= false>
+          <b-navbar-nav class="ml-auto" v-if= 'logedin'>
             <b-nav-form>
               <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
               <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
@@ -47,13 +47,24 @@ import Avatar from 'vue-avatar'
 <script>
 export default {
   name: 'app',
-  baseURL: 'http://127.0.0.1:9999',
+  data() {
+    return {
+      logedin: false,
+    };
+  },
+  baseURL: 'http://localhost:1024',
+  form: {
+    email: '',
+    username: '',
+    gender: null,
+    birthday: '',
+  },
 };
 </script>
 
 <style>
 #app {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" ;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text","Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" ;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

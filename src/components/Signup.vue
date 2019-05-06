@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div>
       <br>
       <h1>Sign Up</h1>
@@ -121,12 +121,12 @@
 
 
 
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
-    <b-card class="mt-3" header="response">
-      <pre class="m-0">{{ responses }}</pre>
-    </b-card>
+<!--    <b-card class="mt-3" header="Form Data Result">-->
+<!--      <pre class="m-0">{{ form }}</pre>-->
+<!--    </b-card>-->
+<!--    <b-card class="mt-3" header="response">-->
+<!--      <pre class="m-0">{{ responses }}</pre>-->
+<!--    </b-card>-->
   </div>
 </template>
 
@@ -159,6 +159,9 @@
         isEmailValid: 'valid',
       };
     },
+    created() {
+
+    },
     methods: {
       onSubmit(evt) {
         evt.preventDefault();
@@ -167,7 +170,6 @@
         // console.log(this.isUsernameValid);
         // console.log(this.isEmailValid);
         if (this.isUsernameValid === 'valid' && this.isEmailValid === 'valid') {
-          console.log('まだ？');
           axios.post(`${app.baseURL}/api/signup/`, JSON.stringify(this.form))
             .then((response) => {
               console.log(response);

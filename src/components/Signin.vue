@@ -11,6 +11,7 @@
           <b-form
             @submit="onSubmit"
             @reset="onReset"
+            @logout="onLogout"
           >
             <b-form-group
               label-cols-sm="5"
@@ -72,7 +73,7 @@
 
 
     <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
+      <pre class="m-0">{{ res }}</pre>
     </b-card>
   </div>
 </template>
@@ -86,25 +87,25 @@
     data() {
       return {
         form: {
-          username: 'Bob',
+          username: 'Alice',
           password: 'password',
-          response: '',
-          base: baseURL.baseURL,
         },
         show: true,
+        res: '',
       };
     },
     methods: {
       onSubmit(evt) {
         evt.preventDefault();
-        axios.post(`${baseURL.baseURL}/api/signin/`, JSON.stringify(this.form))
+        console.log(this.form);
+        axios.post(`${baseURL.baseURL}/api/login/`, JSON.stringify(this.form))
         .then((response) => {
-          this.form.response = 'Hello';
-          this.form.res = response;
+          if (response.data === 'C100-1') {
+            this.$router.push('/home');
+          }
         })
         .catch((error) => {
-          this.form.response = error;
-          console.log(error.data);
+          this.res = error;
         });
       },
       onReset(evt) {
@@ -120,6 +121,16 @@
         this.$nextTick(() => {
           this.show = true;
         });
+      },
+      onLogout(evt) {
+        evt.preventDefault();
+        axios.get(`${baseURL.baseURL}/api/logout/`)
+          .then((response) => {
+            this.res = response;
+          })
+          .catch((error) => {
+            this.res = error;
+          });
       },
     },
   };

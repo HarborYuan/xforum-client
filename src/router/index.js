@@ -5,6 +5,9 @@ import Welcome from '@/components/Welcome';
 import Signup from '@/components/Signup';
 import Signin from '@/components/Signin';
 import Forget from '@/components/Forget';
+import InfoPage from '@/components/InfoPage';
+import Home from '@/components/Home';
+
 
 Vue.use(Router);
 
@@ -34,6 +37,16 @@ export default new Router({
       path: '/forget',
       name: 'forget',
       component: Forget,
+    },
+    {
+      path: '/info',
+      name: 'Personal Information',
+      component: InfoPage,
+    },
+    {
+      path: '/home',
+      name: 'XForum',
+      component: Home,
     },
   ],
 });
