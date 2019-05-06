@@ -175,7 +175,7 @@
               console.log(response);
               this.responses = 'response';
               if (response.data === 'U100') {
-                this.responses = response.data;
+                this.$router.push('/signin/');
               }
             })
             .catch((error) => {

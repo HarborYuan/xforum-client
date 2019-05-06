@@ -14,10 +14,10 @@
       </b-card>
       <b-card v-show="!show">
         <b-card-title>
-          {{ posts[this.detail_index].content }}
+          {{ posts[this.new_comment.pid].content }}
         </b-card-title>
         <p class="meta">
-          {{ this.posts[this.detail_index].createtime }} | {{ this.posts[this.detail_index].username }}
+          {{ this.posts[this.new_comment.pid].createtime }} | {{ this.posts[this.new_comment.pid].username }}
         </p>
         <b-card-group deck>
           <b-card class="item-view-header" v-show="!show" v-for="(comment, index) in comments">
@@ -33,6 +33,16 @@
         </div>
       </b-card>
     </b-card-group>
+    <b-card v-show="!show">
+      <b-form-textarea
+        id="postarea"
+        v-model="new_comment.content"
+        rows="10"
+      >
+      </b-form-textarea>
+      <p></p>
+      <b-button @click="onSubmit" variant="primary">submit</b-button>
+    </b-card>
     <div>
       <br>
     </div>
@@ -50,40 +60,32 @@
     name: 'Home',
     data() {
       return {
-        boards: [{ name: '体育', path: 'pe' }, { name: '教育', path: 'edu' }],
+        boards: [{ name: '', path: '' }],
         response: 'Hello',
         comments: [
           {
-            uid: 3,
-            createtime: '2019-05-04 19:44:01',
-            content: '附议',
-          },
-          {
-            uid: 4,
-            createtime: '2019-05-04 19:44:01',
-            content: '反对',
+            uid: 6,
+            createtime: '',
+            content: '',
           },
         ],
         posts: [
           {
             pid: 1,
             uid: 1,
-            createtime: '2019-03-02 20:29:57',
-            content: '是不是太差劲了',
-          },
-          {
-            pid: 2,
-            uid: 2,
-            createtime: '2019-04-30 20:29:57',
-            content: '差评',
+            createtime: '',
+            content: '',
           },
         ],
         panel: {
           path: 'index',
         },
         show: true,
-        detail_index: 0,
         show_nothing: false,
+        new_comment: {
+          pid: 0,
+          content: '',
+        },
       };
     },
     created() {
@@ -91,6 +93,17 @@
       this.updateBoard();
     },
     methods: {
+      onSubmit() {
+        axios.post(`${app.baseURL}api/addresponse/`, JSON.stringify(this.new_comment)).then(
+          (response) => {
+            if (response.data === 'R100') {
+              alert('success');
+              this.new_comment = { pid: 1, content: '' };
+              this.show = true;
+            }
+          },
+        );
+      },
       updatePosts() {
         axios.post(`${app.baseURL}api/getposts/`, JSON.stringify(this.panel)).then(
           (response) => {
@@ -143,7 +156,9 @@
       getComments(i) {
         console.log(i);
         this.show = false;
-        this.detail_index = i;
+        this.new_comment.pid = this.posts[i].pid;
+        console.log('new_comment:');
+        console.log(this.new_comment);
         axios.post(`${app.baseURL}api/getresponse/`, JSON.stringify(this.posts[i])).then(
           (response) => {
             console.log(response);

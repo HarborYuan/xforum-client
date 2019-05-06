@@ -87,8 +87,8 @@
     data() {
       return {
         form: {
-          username: 'Alice',
-          password: 'password',
+          username: '',
+          password: '',
         },
         show: true,
         res: '',
