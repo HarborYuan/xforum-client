@@ -7,6 +7,7 @@ import Signin from '@/components/Signin';
 import Forget from '@/components/Forget';
 import InfoPage from '@/components/InfoPage';
 import Home from '@/components/Home';
+import Post from '@/components/Post';
 
 
 Vue.use(Router);
@@ -47,6 +48,11 @@ export default new Router({
       path: '/home',
       name: 'XForum',
       component: Home,
+    },
+    {
+      path: '/post',
+      name: 'Post',
+      component: Post,
     },
   ],
 });
