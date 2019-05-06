@@ -32,8 +32,8 @@ import Avatar from 'vue-avatar'
               <!-- Using 'button-content' slot -->
               <template slot="button-content">User</template>
               <b-dropdown-item></b-dropdown-item>
-              <b-dropdown-item href="#/">Profile</b-dropdown-item>
-              <b-dropdown-item href="#/">Sign Out</b-dropdown-item>
+              <b-dropdown-item href="#/Info">Profile</b-dropdown-item>
+              <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
               <b-dropdown-item href="#/Hello">About</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
@@ -45,20 +45,48 @@ import Avatar from 'vue-avatar'
 </template>
 
 <script>
+  import axios from 'axios';
+
 export default {
-  name: 'app',
-  data() {
-    return {
-      logedin: false,
-    };
-  },
-  baseURL: 'http://localhost:1024',
-  form: {
-    email: '',
-    username: '',
-    gender: null,
-    birthday: '',
-  },
+    name: 'app',
+    data() {
+      return {
+        logedin: false,
+        baseURL: '/',
+      };
+    },
+    baseURL: '/',
+    form: {
+      email: '',
+      username: '',
+      gender: null,
+      birthday: '',
+    },
+    created() {
+      axios.post(`${this.baseURL}api/getposts/`, '{"path":"index"}').then(
+        (response) => {
+          if (response.data !== 'U200') {
+            this.logedin = true;
+          } else {
+            this.logedin = false;
+          }
+        },
+      ).catch();
+    },
+    methods: {
+      logout() {
+        axios.get(`${this.baseURL}api/logout`).then(
+          (response) => {
+            if (response.data === 'U100') {
+              this.$router.push('/');
+            } else {
+              // eslint-disable-next-line no-alert
+              alert('Not logged in yet');
+            }
+          },
+        ).catch();
+      },
+    },
 };
 </script>
 

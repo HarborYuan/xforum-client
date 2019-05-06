@@ -68,7 +68,7 @@
       };
     },
     created() {
-      axios.post(`${app.baseURL}/api/getposts/`, JSON.stringify(this.panel)).then(
+      axios.post(`${app.baseURL}api/getposts/`, JSON.stringify(this.panel)).then(
         (response) => {
           this.response = response;
           if (response.data === 'U200') {
@@ -90,7 +90,7 @@
       getComments(i) {
         console.log(i);
         this.show = false;
-        axios.post(`${app.baseURL}/api/getresponse/`, JSON.stringify(this.posts[i])).then(
+        axios.post(`${app.baseURL}api/getresponse/`, JSON.stringify(this.posts[i])).then(
           (response) => {
             console.log(response);
             if (response.data === 'U200') {

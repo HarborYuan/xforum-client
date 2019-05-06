@@ -91,7 +91,7 @@
       onEmailChange(evt) {
         // evt.preventDefault();
         console.log(evt);
-        axios.post(`${app.baseURL}/api/checkemail/`, JSON.stringify(this.form))
+        axios.post(`${app.baseURL}api/checkemail/`, JSON.stringify(this.form))
           .then(
             (response) => {
               console.log(response);

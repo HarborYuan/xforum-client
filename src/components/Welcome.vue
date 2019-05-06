@@ -24,10 +24,9 @@
       };
     },
     created() {
-      axios.post(`${app.baseURL}/api/getposts/`, '{"path":"index"}').then(
+      axios.post(`${app.baseURL}api/getposts/`, '{"path":"index"}').then(
         (response) => {
           if (response.data !== 'U200') {
-            app.data().logedin = true;
             this.$router.push('/home');
           }
         },

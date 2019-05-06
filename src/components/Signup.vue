@@ -170,7 +170,7 @@
         // console.log(this.isUsernameValid);
         // console.log(this.isEmailValid);
         if (this.isUsernameValid === 'valid' && this.isEmailValid === 'valid') {
-          axios.post(`${app.baseURL}/api/signup/`, JSON.stringify(this.form))
+          axios.post(`${app.baseURL}api/signup/`, JSON.stringify(this.form))
             .then((response) => {
               console.log(response);
               this.responses = 'response';
@@ -203,7 +203,7 @@
       onUsernameChange(evt) {
         // evt.preventDefault();
         console.log(evt);
-        axios.post(`${app.baseURL}/api/checkusername/`, JSON.stringify(this.form))
+        axios.post(`${app.baseURL}api/checkusername/`, JSON.stringify(this.form))
           .then(
             (response) => {
               console.log(response);
@@ -224,7 +224,7 @@
       onEmailChange(evt) {
         // evt.preventDefault();
         console.log(evt);
-        axios.post(`${app.baseURL}/api/checkemail/`, JSON.stringify(this.form))
+        axios.post(`${app.baseURL}api/checkemail/`, JSON.stringify(this.form))
           .then(
             (response) => {
               console.log(response);

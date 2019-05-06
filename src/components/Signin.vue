@@ -80,7 +80,7 @@
 
 <script>
   import axios from 'axios';
-  import baseURL from '../App';
+  import app from '../App';
 
   export default {
     name: 'Signup',
@@ -94,11 +94,23 @@
         res: '',
       };
     },
+    created() {
+      axios.post(`${app.baseURL}api/getposts/`, '{"path":"index"}').then(
+        (response) => {
+          if (response.data !== 'U200') {
+            app.data().logedin = true;
+            this.$router.push('/home');
+          } else {
+            app.data().logedin = false;
+          }
+        },
+      ).catch();
+    },
     methods: {
       onSubmit(evt) {
         evt.preventDefault();
         console.log(this.form);
-        axios.post(`${baseURL.baseURL}/api/login/`, JSON.stringify(this.form))
+        axios.post(`${app.baseURL}api/login/`, JSON.stringify(this.form))
         .then((response) => {
           if (response.data === 'C100-1') {
             this.$router.push('/home');
@@ -124,7 +136,7 @@
       },
       onLogout(evt) {
         evt.preventDefault();
-        axios.get(`${baseURL.baseURL}/api/logout/`)
+        axios.get(`${app.baseURL}api/logout/`)
           .then((response) => {
             this.res = response;
           })
