@@ -52,7 +52,7 @@ export default {
       logedin: false,
     };
   },
-  baseURL: 'http://localhost:1024',
+  baseURL: '',
   form: {
     email: '',
     username: '',
