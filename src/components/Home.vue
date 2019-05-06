@@ -5,9 +5,6 @@
         <b-nav-item variant="link" @click="changeBoard(board.path)" v-for="board in boards">{{ board.name }}</b-nav-item>
       </b-nav>
     </div>
-    <p v-show="show_nothing">
-      Unfortunately, there is nothing here.
-    </p>
     <b-card-group deck>
       <b-card class="card card__one" v-for="(post, index) in posts" v-show="show" @click="getComments(index)">
         <b-card-title>{{ post.content }}</b-card-title>
@@ -102,12 +99,10 @@
               // 清除cookies
               this.$router.push('/');
             } else if (response.data === 'G104') {
-              this.posts = [];
-              this.show_nothing = true;
+              this.posts = [{ content: 'Unfortunately, there is nothing here.' }];
             } else {
               this.posts = response.data.posts;
               this.convertTimeAgo();
-              this.show_nothing = false;
             }
           },
         ).catch();
