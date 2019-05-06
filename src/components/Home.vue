@@ -1,28 +1,35 @@
 <template>
-  <b-card>
-    <div class="container">
-      <div class="item-view" v-for="(post, index) in posts" v-show="show">
-        <div class="item-view-header">
-          <a @click="getComments(index)"><h1>{{ post.content }}</h1></a>
-          <p class="meta">
-            {{ post.createtime }}
-          </p>
-        </div>
-      </div>
-      <div class="item-view">
-        <div class="item-view-header" v-show="!show" v-for="(comment, index) in comments">
-          <h2>{{ comment.content }}</h2>
-          <p class="meta">
-            {{ comment.createtime }}
-          </p>
-        </div>
-      </div>
-      <div>
-        <b-button v-if="!show" variant="link" @click="onReturn">return</b-button>
-      </div>
-
+  <div>
+    <div>
+      <b-button-group v-for="board in boards">
+        <b-button variant="link" @click="changeBoard(board.path)">{{ board.name }}</b-button>
+      </b-button-group>
     </div>
-  </b-card>
+    <b-card>
+      <div class="container">
+        <div class="item-view" v-for="(post, index) in posts" v-show="show">
+          <div class="item-view-header">
+            <a @click="getComments(index)"><h1>{{ post.content }}</h1></a>
+            <p class="meta">
+              {{ post.createtime }} | {{ getUsername(post.uid) }}
+            </p>
+          </div>
+        </div>
+        <div class="item-view">
+          <div class="item-view-header" v-show="!show" v-for="(comment, index) in comments">
+            <h2 style="font-size:12px">{{ comment.content }}</h2>
+            <p class="meta">
+              {{ comment.createtime }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <b-button v-if="!show" variant="link" @click="onReturn">return</b-button>
+        </div>
+
+      </div>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -33,7 +40,7 @@
     name: 'Home',
     data() {
       return {
-        boards: [],
+        boards: [{ name: '体育', path: 'pe' }, { name: '教育', path: 'edu' }],
         response: 'Hello',
         comments: [
           {
@@ -79,8 +86,43 @@
           }
         },
       ).catch();
+      axios.get(`${app.baseURL}api/getboards`).then(
+        (response) => {
+          console.log(response);
+          if (response.data === 'U200') {
+            this.$router.push('/');
+          } else {
+            this.boards = response.data.board;
+          }
+        },
+      ).catch();
     },
     methods: {
+      changeBoard(path) {
+        this.panel.path = path;
+        axios.post(`${app.baseURL}api/getposts/`, JSON.stringify(this.panel)).then(
+          (response) => {
+            this.response = response;
+            if (response.data === 'U200') {
+              // 清除cookies
+              this.$router.push('/');
+            } else {
+              this.posts = response.data.posts;
+            }
+          },
+        ).catch();
+      },
+      getUsername(uid_) {
+        console.log(uid_);
+        axios.post(`${app.baseURL}api/getuserinfo/`, JSON.stringify({ uid: uid_ })).then(
+          (response) => {
+            if (response.data === 'G104') {
+              return 'Anonymous';
+            }
+            return response.data.username;
+          },
+        ).catch();
+      },
       onReturn(evt) {
         evt.preventDefault();
         console.log(evt);

@@ -78,6 +78,7 @@ export default {
         axios.get(`${this.baseURL}api/logout`).then(
           (response) => {
             if (response.data === 'U100') {
+              this.logedin = false;
               this.$router.push('/');
             } else {
               // eslint-disable-next-line no-alert
