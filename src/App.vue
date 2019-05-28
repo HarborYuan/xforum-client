@@ -2,100 +2,114 @@ import Avatar from 'vue-avatar'
 
 <template>
   <div id="app">
-    <div>
-      <b-navbar toggleable="lg" type="dark" variant="info">
-        <b-navbar-brand href="#/">X-forum</b-navbar-brand>
-
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav>
-            <b-nav-item href="#/post">Post</b-nav-item>
-<!--            <b-nav-item href="/" disabled>Disabled</b-nav-item>-->
-          </b-navbar-nav>
-
-          <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto" v-if= 'logedin'>
-            <b-nav-form>
-              <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-              <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-            </b-nav-form>
-
-<!--            <b-nav-item-dropdown text="Lang" right>-->
-<!--              <b-dropdown-item href="#/">EN</b-dropdown-item>-->
-<!--              <b-dropdown-item href="#/">ES</b-dropdown-item>-->
-<!--              <b-dropdown-item href="#/">RU</b-dropdown-item>-->
-<!--              <b-dropdown-item href="#/">FA</b-dropdown-item>-->
-<!--            </b-nav-item-dropdown>-->
-
-            <b-nav-item-dropdown right>
-              <!-- Using 'button-content' slot -->
-              <template slot="button-content">User</template>
-              <b-dropdown-item></b-dropdown-item>
-              <b-dropdown-item href="#/Info">Profile</b-dropdown-item>
-              <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
-              <b-dropdown-item href="#/Hello">About</b-dropdown-item>
-            </b-nav-item-dropdown>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-    </div>
-    <router-view></router-view>
+    <header class="header">
+      <nav class="inner">
+        <router-link to="/" exact>
+          X-Forum
+        </router-link>
+        <router-link to="/top">Top</router-link>
+        <router-link to="/new">New</router-link>
+        <router-link to="/show">Show</router-link>
+        <router-link to="/ask">Ask</router-link>
+        <router-link to="/job">Jobs</router-link>
+        <a class="github" href="https://github.com/" target="_blank" rel="noopener">
+          Built with Vue.js
+        </a>
+      </nav>
+    </header>
+    <transition name="fade" mode="out-in">
+      <router-view class="view"></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-  import axios from 'axios';
+
 
 export default {
-    name: 'app',
-    data() {
-      return {
-        logedin: false,
-        baseURL: '/',
-      };
-    },
-    baseURL: '/',
-    form: {
-      email: '',
-      username: '',
-      gender: null,
-      birthday: '',
-    },
-    created() {
-      axios.post(`${this.baseURL}api/getposts/`, '{"path":"index"}').then(
-        (response) => {
-          if (response.data !== 'U200') {
-            this.logedin = true;
-          } else {
-            this.logedin = false;
-          }
-        },
-      ).catch();
-    },
-    methods: {
-      logout() {
-        axios.get(`${this.baseURL}api/logout`).then(
-          (response) => {
-            if (response.data === 'U100') {
-              this.logedin = false;
-              this.$router.push('/');
-            } else {
-              // eslint-disable-next-line no-alert
-              alert('Not logged in yet');
-            }
-          },
-        ).catch();
-      },
-    },
+  name: 'app',
 };
 </script>
 
-<style>
-#app {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text","Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" ;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-}
+<style lang="stylus">
+  body
+    font-family -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size 15px
+    background-color lighten(#eceef1, 30%)
+    margin 0
+    padding-top 55px
+    color #34495e
+    overflow-y scroll
+    background url("./assets/GGB.jpg")
+    background-position center
+
+
+  a
+    color #34495e
+    text-decoration none
+
+  .header
+    background-color #ff6600
+    position fixed
+    z-index 999
+    height 55px
+    top 0
+    left 0
+    right 0
+    .inner
+      max-width 800px
+      box-sizing border-box
+      margin 0px auto
+      padding 15px 5px
+    a
+      color rgba(255, 255, 255, .8)
+      line-height 24px
+      transition color .15s ease
+      display inline-block
+      vertical-align middle
+      font-weight 300
+      letter-spacing .075em
+      margin-right 1.8em
+      &:hover
+        color #fff
+      &.router-link-active
+        color #fff
+        font-weight 400
+      &:nth-child(6)
+        margin-right 0
+    .github
+      color #fff
+      font-size .9em
+      margin 0
+      float right
+
+  .logo
+    width 24px
+    margin-right 10px
+    display inline-block
+    vertical-align middle
+
+  .view
+    max-width 1000px
+    margin 0 auto
+    position relative
+
+  .fade-enter-active, .fade-leave-active
+    transition all .2s ease
+
+  .fade-enter, .fade-leave-active
+    opacity 0
+
+  @media (max-width 860px)
+    .header .inner
+      padding 15px 30px
+
+  @media (max-width 600px)
+    .header
+      .inner
+        padding 15px
+      a
+        margin-right 1em
+      .github
+        display none
 </style>

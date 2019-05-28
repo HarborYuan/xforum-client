@@ -12,10 +12,13 @@ import router from './router';
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
+
 /* eslint-disable no-new */
-new Vue({
+const nv = new Vue({
   el: '#app',
   router,
   template: '<App/>',
   components: { App },
 });
+
+nv.config.debug = true;
