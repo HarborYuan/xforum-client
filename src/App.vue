@@ -4,19 +4,18 @@ import Avatar from 'vue-avatar'
   <div id="app">
     <header class="header">
       <nav class="inner">
-        <router-link to="/" exact>
+        <router-link to="/" exact style="font-variant: small-caps">
           X-Forum
         </router-link>
-        <router-link to="/top">Top</router-link>
-        <router-link to="/new">New</router-link>
-        <router-link to="/show">Show</router-link>
-        <router-link to="/ask">Ask</router-link>
-        <router-link to="/job">Jobs</router-link>
-        <a class="github" href="https://github.com/" target="_blank" rel="noopener">
-          Built with Vue.js
-        </a>
+        <span v-if="isLoggedIn">
+          <Boardlink v-for="board in boards" v-bind="board"></Boardlink>
+        </span>
+
+        <router-link v-if="!isLoggedIn" class="github" to="/signin">Sign In</router-link>
+
       </nav>
     </header>
+
     <transition name="fade" mode="out-in">
       <router-view class="view"></router-view>
     </transition>
@@ -24,11 +23,36 @@ import Avatar from 'vue-avatar'
 </template>
 
 <script>
+  import Boardlink from './components/Boardlink';
+  import { checkState } from './api/user';
 
-
-export default {
-  name: 'app',
-};
+  export default {
+    name: 'app',
+    components: { Boardlink },
+    computed: {
+      isLoggedIn() {
+        return this.$store.state.isLoggedIn;
+      },
+      boards() {
+        return this.$store.state.boards;
+      },
+    },
+    beforeCreate() {
+      console.log('app');
+      checkState().then((response) => {
+        if (this.debug) console.log(response);
+        if (response === 'error') {
+          this.$store.commit('LOGOUT');
+          this.error_flag = true;
+          this.$router.push('/signin');
+        } else if (response) {
+          this.$store.commit('LOGIN');
+          this.$store.dispatch('FETCH_BOARD_DATA');
+          // this.$router.push('/posts/index');
+        }
+      });
+    },
+  };
 </script>
 
 <style lang="stylus">
@@ -40,7 +64,7 @@ export default {
     padding-top 55px
     color #34495e
     overflow-y scroll
-    background url("./assets/GGB.jpg")
+    background #e6ccc0
     background-position center
 
 
@@ -49,7 +73,7 @@ export default {
     text-decoration none
 
   .header
-    background-color #ff6600
+    background-color #ee6e15
     position fixed
     z-index 999
     height 55px

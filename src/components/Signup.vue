@@ -116,7 +116,7 @@
 
 <script>
   import axios from 'axios';
-  import store from '../store/store';
+  import store from '../store_/store';
 
   export default {
     name: 'Signup',
@@ -207,8 +207,9 @@
     filter: blur(0);
     width: 50%;
     position: relative;
-    margin: auto auto;
+    margin: auto 0px auto 100px;
     padding-top: 10px;
+    border-radius: 5px;
   }
   .form {
     margin: auto;
