@@ -5,6 +5,8 @@ import Success from '../view/Success';
 import Signin from '../view/Signin';
 import Test from '../view/Test';
 import PostList from '../view/PostList';
+import Forget from '../view/Forget';
+import PostView from '../view/PostView';
 
 
 // eslint-disable-next-line no-unused-vars
@@ -38,9 +40,17 @@ export default new Router({
       component: Test,
     },
     {
-      path: '/posts/:board',
+      path: '/forget/',
+      component: Forget,
+    },
+    {
+      path: '/posts/:board/',
       // name: `${this.$store.state.boards.filter(this.path = this.$route.params.board).name}`,
       component: PostList,
+    },
+    {
+      path: '/post/:pid/',
+      component: PostView,
     },
   ],
 });

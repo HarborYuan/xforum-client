@@ -1,4 +1,4 @@
-import { updateBoard, updatePosts } from '../api/post';
+import { updateBoard, updatePosts, getComments } from '../api/post';
 
 
 export default {
@@ -21,11 +21,21 @@ export default {
         commit('CLEAR_POSTS');
         return 'network error';
       } else if (response === 'empty') {
-        commit('SET_POSTS', { posts: [{ username: 'System', content: 'Sorry, nothing here.', createtime: Date(), uid: 0, pid: 0 }] });
+        commit('CLEAR_POSTS');
         return 'empty';
       }
       commit('SET_POSTS', { posts: response });
       return 'success';
     });
   },
+  FETCH_COMMENT_DATA: ({ state, commit }, { pid }) => getComments(pid).then((response) => {
+    if (state.debug) console.log(response);
+    if (response === 'fail') {
+      return 'refuse';
+    } else if (response === 'error') {
+      return 'network error';
+    }
+    commit('SET_POST', { post: response, pid });
+    return 'success';
+  }),
 };

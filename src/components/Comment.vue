@@ -1,10 +1,10 @@
 <template>
-  <li v-if="comment" class="comment">
+  <li class="comment">
     <div class="by">
-      <router-link :to="'/user/' + comment.uid">{{ comment.username }}</router-link>
-      {{ timeAgo }} ago
+      <router-link :to="'/user/' + this.uid">{{ this.username }}</router-link>
+      {{ timeAgo }}
     </div>
-    <div class="text" v-html="comment.content"></div>
+    <div class="text" v-html="this.content"></div>
 <!--    <div class="toggle" :class="{ open }" v-if="comment.kids && comment.kids.length">-->
 <!--      <a @click="open = !open">{{-->
 <!--        open-->
@@ -19,10 +19,21 @@
 </template>
 
 <script>
+  import { convertTimeAgo } from '../api/general';
+
   export default {
     name: 'comment',
-    props: ['comment'],
-    // computed: {},
+    props: {
+      uid: Number,
+      content: String,
+      username: String,
+      createtime: String,
+    },
+    computed: {
+      timeAgo() {
+        return convertTimeAgo(this.createtime);
+      },
+    },
     methods: {
       // pluralize: n => n + (n === 1 ? ' reply' : ' replies')
     },

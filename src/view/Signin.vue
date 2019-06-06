@@ -33,7 +33,7 @@
 
             <div>
               <label>Password:</label>
-              <a class="forget-style" href="#/forget">Forget Password?</a>
+              <a class="forget-style" href="/forget">Forget Password?</a>
             </div>
             <b-form-input
               id="input-password"

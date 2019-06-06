@@ -1,18 +1,19 @@
 <template>
   <div>
     <h1>Test</h1>
-    <div>{{ this.response }}</div>
-    <Comment v-bind="{comment}"></Comment>
+    <PostView v-bind:item="item"></PostView>
     <button @click="click">Test</button>
   </div>
 </template>
 
 <script>
   import Comment from '../components/Comment';
+  import PostView from './PostView';
 
   export default {
     name: 'Test',
     components: {
+      PostView,
       Comment,
     },
     computed: {
@@ -23,12 +24,36 @@
     created() {
       // this.$store.dispatch({ type: 'index' });
     },
-    data() {
-      return {
-        pid: 6,
-        comment: JSON.parse('{" ":3,"createtime":"2019-05-04 19:44:01","content":"附议"}'),
-      };
-    },
+    // data() {
+    //   return {
+    //     item: JSON.parse('{\n' +
+    //       '  "uid": 1,\n' +
+    //       '  "username": "alice",\n' +
+    //       '  "createtime": "2006-01-02 15:04:05",\n' +
+    //       '  "content": "我在马路边捡到一分钱",\n' +
+    //       '  "response": [\n' +
+    //       '    {\n' +
+    //       '      "uid": 2,\n' +
+    //       '      "username": "bob",\n' +
+    //       '      "createtime": "2006-01-02 15:04:05",\n' +
+    //       '      "content": "我并不认为你捡过钱"\n' +
+    //       '    },\n' +
+    //       '    {\n' +
+    //       '      "uid": 1,\n' +
+    //       '      "username": "alice",\n' +
+    //       '      "createtime": "2006-01-02 15:04:05",\n' +
+    //       '      "content": "我确确实实捡了钱"\n' +
+    //       '    },\n' +
+    //       '    {\n' +
+    //       '      "uid": 1,\n' +
+    //       '      "username": "alice",\n' +
+    //       '      "createtime": "2006-01-02 15:04:05",\n' +
+    //       '      "content": "我就是捡了钱"\n' +
+    //       '    }\n' +
+    //       '  ]\n' +
+    //       '}'),
+    //   };
+    // },
     methods: {
       click() {
         // this.$store.commit('SET_BOARD', { path: 'index' });

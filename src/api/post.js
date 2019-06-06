@@ -34,14 +34,14 @@ export function updatePosts(type) {
   });
 }
 
-export function getComments(post) {
-  axios.post(`${api.baseURL}api/getresponse/`, JSON.stringify(post)).then(
+export function getComments(pid) {
+  return axios.post(`${api.baseURL}api/getresponse/`, `{"pid":${pid}}`).then(
     (response) => {
       if (api.debug) console.log(response);
       if (response.data === 'U200') {
         return 'fail';
       }
-      return response.data.response;
+      return response.data;
     },
   ).catch((error) => {
     if (api.debug) console.log(error);

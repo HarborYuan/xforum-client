@@ -17,7 +17,10 @@
 <!--    </transition>-->
     <transition :name="transition">
       <div class="news-list">
-        <transition-group tag="ul" name="item">
+        <h2 align="center" style="font-weight: 300" v-if="posts.length === 0">
+          Sorry! There's nothing here
+        </h2>
+        <transition-group v-else tag="ul" name="item">
           <Item v-for="item in posts" :key="item.pid" v-bind="item"></Item>
         </transition-group>
       </div>
@@ -53,7 +56,7 @@
       },
     },
     beforeRouteUpdate(to, from, next) {
-      this.$store.dispatch('FETCH_POST_DATA', { type: this.$route.params.board }).then(() => {
+      this.$store.dispatch('FETCH_POST_DATA', { type: to.params.board }).then(() => {
         this.refreshed = true;
       });
       this.refreshed = false;
@@ -65,7 +68,7 @@
 
 <style lang="stylus">
   .news-view
-    padding-top 45px
+    padding-top 0px
 
   .news-list-nav, .news-list
     background-color transparent

@@ -31,6 +31,13 @@ export default {
     if (state.debug) console.log(posts);
     Vue.set(state.list, state.activeBoard, posts);
   },
+  SET_POST: (state, { post, pid }) => {
+    if (state.debug) console.log(post);
+    if (post.response === null) {
+      post.response = [];
+    }
+    Vue.set(state.posts, pid, post);
+  },
   SET_BOARD: (state, { path }) => {
     state.activeBoard = path;
   },

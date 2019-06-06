@@ -4,16 +4,15 @@
       <div class="item-view-header">
         <h1>{{ item.content }}</h1>
         <p class="meta">
-          | by <router-link :to="'/user/' + item.uid">{{ item.username }}</router-link>
-          {{ item.createtime | timeAgo }} ago
+          {{ timeAgo }} | by <router-link :to="'/user/' + item.uid">{{ item.username }}</router-link>
         </p>
       </div>
       <div class="item-view-comments">
         <p class="item-view-comments-header">
-          {{ comments.length > 0 ? comments.length + ' comments' : 'No comments yet.' }}
+          {{ item.response.length > 0 ? item.response.length + ' comments' : 'No comments yet.' }}
         </p>
         <ul class="comment-children">
-          <comment v-for="comment in comments" v-bind:content="comment"></comment>
+          <Comment v-for="res in item.response" v-bind="res"></Comment>
         </ul>
       </div>
     </template>
@@ -21,8 +20,24 @@
 </template>
 
 <script>
+  import { convertTimeAgo } from '../api/general';
+  import Comment from '../components/Comment';
+
   export default {
     name: 'PostView',
+    components: { Comment },
+    // props: ['item'],
+    mounted() {
+      this.$store.dispatch('FETCH_COMMENT_DATA', { pid: this.$route.params.pid });
+    },
+    computed: {
+      item() {
+        return this.$store.state.posts[this.$route.params.pid];
+      },
+      timeAgo() {
+        return convertTimeAgo(this.item.createtime);
+      },
+    },
   };
 </script>
 
