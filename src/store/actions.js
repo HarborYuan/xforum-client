@@ -24,6 +24,7 @@ export default {
         commit('CLEAR_POSTS');
         return 'empty';
       }
+      response.reverse();
       commit('SET_POSTS', { posts: response });
       return 'success';
     });

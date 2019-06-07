@@ -15,6 +15,12 @@
 <!--        </transition-group>-->
 <!--      </div>-->
 <!--    </transition>-->
+    <div style="margin-top: 20px;">
+      <input style="width: 89%;" v-model="content"><button @click="submitPost">Add New Post</button>
+    </div>
+    <div v-if="error_flag">
+      <b-alert show variant="danger">Some fatal error happened</b-alert>
+    </div>
     <transition :name="transition">
       <div class="news-list">
         <h2 align="center" style="font-weight: 300" v-if="posts.length === 0">
@@ -34,6 +40,7 @@
 
 <script>
   import Item from '../components/Item';
+  import { sendPost } from '../api/post';
 
   export default {
     name: 'post-list',
@@ -42,6 +49,8 @@
       return {
         transition: 'slide-right',
         refreshed: true,
+        content: '',
+        error_flag: false,
       };
     },
     mounted() {
@@ -53,6 +62,17 @@
       },
       board() {
         return this.$route.params.board;
+      },
+    },
+    methods: {
+      submitPost() {
+        sendPost(this.content, this.$route.params.board).then((response) => {
+          if (response === 'success') {
+            this.$router.go(0);
+          } else {
+            this.error_flag = true;
+          }
+        });
       },
     },
     beforeRouteUpdate(to, from, next) {

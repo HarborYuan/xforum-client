@@ -116,7 +116,9 @@
           if (this.debug) console.log(response);
           if (response === 'success') {
             this.$store.commit('LOGIN');
-            this.$router.push('/index');
+            this.$store.dispatch('FETCH_BOARD_DATA').then(() => {
+              this.$router.push('/posts/index');
+            });
           } else if (response === 'fail') {
             this.fail_flag = true;
             this.$store.commit('LOGOUT');

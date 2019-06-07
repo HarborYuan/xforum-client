@@ -7,6 +7,7 @@ import Test from '../view/Test';
 import PostList from '../view/PostList';
 import Forget from '../view/Forget';
 import PostView from '../view/PostView';
+import InfoPage from '../view/InfoPage';
 
 
 // eslint-disable-next-line no-unused-vars
@@ -51,6 +52,10 @@ export default new Router({
     {
       path: '/post/:pid/',
       component: PostView,
+    },
+    {
+      path: '/user/:uid/',
+      component: InfoPage,
     },
   ],
 });

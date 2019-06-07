@@ -10,12 +10,10 @@ import Avatar from 'vue-avatar'
         <span v-if="isLoggedIn">
           <Boardlink v-for="board in boards" v-bind="board"></Boardlink>
         </span>
-
         <router-link v-if="!isLoggedIn" class="github" to="/signin">Sign In</router-link>
-
       </nav>
-    </header>
 
+    </header>
     <transition name="fade" mode="out-in">
       <router-view class="view"></router-view>
     </transition>
@@ -24,11 +22,13 @@ import Avatar from 'vue-avatar'
 
 <script>
   import Boardlink from './components/Boardlink';
-  import { checkState } from './api/user';
 
   export default {
     name: 'app',
     components: { Boardlink },
+    data() {
+      return {};
+    },
     computed: {
       isLoggedIn() {
         return this.$store.state.isLoggedIn;
@@ -37,18 +37,28 @@ import Avatar from 'vue-avatar'
         return this.$store.state.boards;
       },
     },
+    methods: {},
     beforeCreate() {
       console.log('app');
-      checkState().then((response) => {
-        if (this.debug) console.log(response);
-        if (response === 'error') {
-          this.$store.commit('LOGOUT');
-          this.error_flag = true;
-          this.$router.push('/signin');
-        } else if (response) {
+      // checkState().then((response) => {
+      //   if (this.debug) console.log(response);
+      //   if (response === 'error') {
+      //     this.$store.commit('LOGOUT');
+      //     this.error_flag = true;
+      //     this.$router.push('/signin');
+      //   } else if (response) {
+      //     this.$store.commit('LOGIN');
+      //     this.$store.dispatch('FETCH_BOARD_DATA');
+      //     // this.$router.push('/posts/index');
+      //   }
+      // });
+      this.$store.dispatch('FETCH_BOARD_DATA').then((response) => {
+        if (response === 'refuse') {
+          if (!this.$route.path === '/' && !this.$route.path === '/signin/') {
+            this.$router.push('/');
+          }
+        } else {
           this.$store.commit('LOGIN');
-          this.$store.dispatch('FETCH_BOARD_DATA');
-          // this.$router.push('/posts/index');
         }
       });
     },
@@ -98,9 +108,15 @@ import Avatar from 'vue-avatar'
         color #fff
       &.router-link-active
         color #fff
-        font-weight 400
+        font-weight 500
       &:nth-child(6)
         margin-right 0
+    .user
+      color #ffad7b
+      margin 0
+      float right
+      &:hover
+        color #fff3cd
     .github
       color #fff
       font-size .9em

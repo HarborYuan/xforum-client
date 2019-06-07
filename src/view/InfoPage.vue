@@ -1,120 +1,67 @@
 <template>
-  <div class="container">
-    <div>
-      <br>
-      <br>
-    </div>
-    <div class="col-md-8 offset-md-2">
-      <b-card
-        title="Personal Information"
-      >
-        <b-media>
-          <b-img slot="aside" src="/static/img/avteg.png"></b-img>
-          <b-card>
-            <h2 class="mt-0" align="left">{{ form.username }}</h2>
-            <b-form-group
-              label-cols-sm="5"
-              id="input-group-email"
-              label="E-mail:"
-              label-for="input-email"
 
-            >
-              <b-form-input
-                id="input-email"
-                v-model="form.email"
-                type="email"
-                placeholder="Enter your E-mail"
-                required
-                @input="onEmailChange"
-              ></b-form-input>
-              <b-form-invalid-feedback
-                id="passwordValidated"
-                v-bind:state="isEmailValid"
-              >
-                Email Registered!
-              </b-form-invalid-feedback>
-            </b-form-group>
-            <b-form-group
-              label-cols-sm="5"
-              id="input-group-gender"
-              label="Gender:"
-              label-for="input-gender"
-              class="mb-2"
-            >
-              <b-form-radio-group
-                class="pt-2"
-                :options="[
-              { value: 0, text: 'Male' },
-              { value: 1, text: 'Female' },
-              { value: 2, text: 'Other' },
-            ]"
-                v-model="form.gender"
-                required
-              ></b-form-radio-group>
-            </b-form-group>
-            <b-form-group
-              label-cols-sm="5"
-              id="input-group-birthday"
-              label="Birthday:"
-              label-for="input-birthday"
-              required
-              class="mb-3"
-            >
-              <b-form-input
-                id="input-birthday"
-                v-model="form.birthday"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </b-card>
-        </b-media>
-      </b-card>
-
+  <b-jumbotron :header="this.userInfo.username" :lead="'Joined Since '+new Date(userInfo.createtime).getFullYear()">
+    <div v-if="error_flag">
+      <b-alert show variant="danger">Some fatal error happened</b-alert>
     </div>
-  </div>
+    <hr>
+    <p>UID： {{ this.userInfo.uid }}</p>
+    <p>Age: {{ this.age }}</p>
+    <p>Gender: {{ ['Male', 'Female', 'Other'][this.userInfo.gender] }}</p>
+    <a :href="'mailto:' + this.userInfo.email">📧Contact</a>
+  </b-jumbotron>
+
 </template>
 
 <script>
-  import axios from 'axios/index';
-  import app from '../App';
+
+  import { getUserInfo } from '../api/user';
 
   export default {
     name: 'InfoPage',
     data() {
       return {
-        form: app.form,
-        isEmailValid: 'valid',
+        error_flag: false,
+        userInfo: {
+          uid: 0,
+          username: '',
+          birthdate: '',
+          createtime: '',
+          gender: 0,
+          email: '',
+        },
       };
     },
-    methods: {
-      onEmailChange(evt) {
-        // evt.preventDefault();
-        console.log(evt);
-        axios.post(`${app.baseURL}api/checkemail/`, JSON.stringify(this.form))
-          .then(
-            (response) => {
-              console.log(response);
-              if (response.data === 'C100-1') {
-                this.isEmailValid = 'invalid';
-              } else if (response.data === 'C100-0') {
-                this.isEmailValid = 'valid';
-              }
-            },
-          )
-          .catch(
-            (error) => {
-              console.log(error);
-            },
-          );
+    mounted() {
+      getUserInfo(parseInt(this.$route.params.uid, 10)).then((response) => {
+        if (response === 'USER_NOT_FOUND') {
+          // todo 需要添加404页面
+        } else if (response === 'fail') {
+          this.error_flag = true;
+        } else {
+          this.userInfo = response;
+        }
+      });
+    },
+    computed: {
+      age() {
+        const date = new Date(this.userInfo.birthdate);
+        const now = new Date();
+        const aged = now.getFullYear() - date.getFullYear();
+        if (now.getMonth() < date.getMonth()) {
+          return aged;
+        } else if (now.getMonth() === date.getMonth()) {
+          if (now.getDay() >= date.getDay()) {
+            return aged + 1;
+          }
+          return aged;
+        }
+        return aged + 1;
       },
     },
   };
 </script>
 
 <style scoped>
-  img.avartar{
 
-
-  }
 </style>

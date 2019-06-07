@@ -35,3 +35,16 @@ export function logout() {
   ).catch(() => 'error');
 }
 
+export function getUserInfo(uid) {
+  return axios.post(`${api.baseURL}api/getuserdetailinfo/`, JSON.stringify({ uid })).then((response) => {
+    if (response.data === 'G104') {
+      return 'USER_NOT_FOUND';
+    } else if (typeof response.data === 'string') {
+      return 'fail';
+    }
+    return response.data;
+  }).catch((error) => {
+    if (api.debug) console.log(error);
+    return 'error';
+  });
+}

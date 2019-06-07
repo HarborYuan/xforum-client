@@ -48,3 +48,29 @@ export function getComments(pid) {
     return 'error';
   });
 }
+
+export function sendComment(pid, content) {
+  return axios.post(`${api.baseURL}api/addresponse/`, JSON.stringify({ pid: parseInt(pid, 10), content })).then((response) => {
+    if (api.debug) console.log(response);
+    if (response.data === 'R100') {
+      return 'success';
+    }
+    return 'fail';
+  }).catch((error) => {
+    if (api.debug) console.log(error);
+    return 'error';
+  });
+}
+
+export function sendPost(content, path) {
+  return axios.post(`${api.baseURL}api/addposts/`, JSON.stringify({ content, path })).then((response) => {
+    if (api.debug) console.log(response);
+    if (response.data === 'B100') {
+      return 'success';
+    }
+    return 'fail';
+  }).catch((error) => {
+    if (api.debug) console.log(error);
+    return 'error';
+  });
+}

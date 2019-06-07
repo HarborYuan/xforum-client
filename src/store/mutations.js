@@ -44,7 +44,6 @@ export default {
   SET_USER_INFO(state, { userInfo }) {
     // if (state.debug) console.log('setUserAction triggered with ', newValue);
     state.userInfo = userInfo;
-    state.userInfo.password = '';
   },
   CLEAR_USER_INFO(state) {
     // if (state.debug) console.log('clearUserAction triggered');

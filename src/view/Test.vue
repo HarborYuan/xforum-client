@@ -1,28 +1,35 @@
 <template>
   <div>
     <h1>Test</h1>
-    <PostView v-bind:item="item"></PostView>
-    <button @click="click">Test</button>
+    <MessageBubble :sender="true"></MessageBubble>
+    <MessageBubble :sender="false"></MessageBubble>
   </div>
 </template>
 
 <script>
   import Comment from '../components/Comment';
   import PostView from './PostView';
+  import InfoPage from './InfoPage';
+  import TextEditor from '../components/TextEditor';
+  import MessageBubble from '../components/MessageBubble';
+
+  // import TextEditor from '../components/TextEditor';
 
   export default {
     name: 'Test',
     components: {
+      MessageBubble,
+      InfoPage,
       PostView,
       Comment,
+      TextEditor,
     },
     computed: {
       posts() {
         return this.$store.state.list.index;
       },
     },
-    created() {
-      // this.$store.dispatch({ type: 'index' });
+    mounted() {
     },
     // data() {
     //   return {
