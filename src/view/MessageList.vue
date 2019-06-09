@@ -41,7 +41,7 @@
         } else if (typeof response === 'string') {
           this.error_flag = true;
         } else {
-          this.msgs = response.messages;
+          thi s.msgs = response.messages;
         }
       }).catch(() => {
         this.error_flag = true;
