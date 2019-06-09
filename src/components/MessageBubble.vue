@@ -1,11 +1,11 @@
 <template>
   <div>
     <div id="bubbles">
-      <div v-if="this.sender" class="blocker">
-        <div class="bubbleblue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt rutrum lacus vitae hendrerit. Morbi id tellus eu justo porttitor tempus non id felis. Ut interdum justo quis elementum imperdiet. Nulla non ex augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc vitae auctor lorem, in tristique enim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla facilisi. Vestibulum porttitor erat nec tellus pharetra efficitur.</div>
+      <div v-if="this.blued" class="blocker">
+        <div class="bubbleblue">{{ msg.content }}</div>
       </div>
       <div v-else class="blocker">
-        <div class="bubblegrey">我好</div>
+        <div class="bubblegrey">{{ msg.content }}</div>
       </div>
     </div>
   </div>
@@ -14,7 +14,12 @@
 <script>
   export default {
     name: 'MessageBubble',
-    props: ['sender'],
+    props: ['correspondent', 'msg'],
+    computed: {
+      blued() {
+        return this.correspondent === this.msg.sendee;
+      },
+    },
   };
 </script>
 

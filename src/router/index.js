@@ -8,6 +8,10 @@ import PostList from '../view/PostList';
 import Forget from '../view/Forget';
 import PostView from '../view/PostView';
 import InfoPage from '../view/InfoPage';
+import MessageList from '../view/MessageList';
+import Conversation from '../view/Conversation';
+import debug from '../view/debug';
+import NotFound from '../view/NotFound';
 
 
 // eslint-disable-next-line no-unused-vars
@@ -56,6 +60,26 @@ export default new Router({
     {
       path: '/user/:uid/',
       component: InfoPage,
+    },
+    {
+      path: '/message/',
+      component: MessageList,
+    },
+    {
+      path: '/conversation/:uid/',
+      component: Conversation,
+    },
+    {
+      path: '/debug/',
+      component: debug,
+    },
+    {
+      path: '/404/',
+      component: NotFound,
+    },
+    {
+      path: '*',
+      redirect: '/404/',
     },
   ],
 });

@@ -54,7 +54,11 @@
       };
     },
     mounted() {
-      this.$store.dispatch('FETCH_POST_DATA', { type: this.$route.params.board });
+      this.$store.dispatch('FETCH_POST_DATA', { type: this.$route.params.board }).then((response) => {
+        if (response === 'refuse') {
+          this.$router.push('/404/');
+        }
+      });
     },
     computed: {
       posts() {

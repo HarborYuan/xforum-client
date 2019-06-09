@@ -2,8 +2,8 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 
 export default {
-  baseURL: 'http://127.0.0.1:1024/',
-  debug: true,
+  debug: false,
+  baseURL: '/',
 };
 
 export function convertTimeAgo(time) {

@@ -56,4 +56,7 @@ export default {
     };
     state.isLoggedIn = false;
   },
+  SET_UID(state, { uid }) {
+    state.uid = uid;
+  },
 };

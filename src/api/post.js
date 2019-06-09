@@ -7,6 +7,8 @@ export function updateBoard() {
       // eslint-disable-next-line no-console
       if (api.debug) console.log(response);
       if (response.data === 'U200') {
+        return 'refuse';
+      } else if (typeof response.data === 'string') {
         return 'fail';
       }
       return response.data.board;
@@ -24,7 +26,7 @@ export function updatePosts(type) {
       if (response.data === 'U200') {
         return 'fail';
       } else if (response.data === 'G104') {
-        return 'empty';
+        return [];
       }
       return response.data.posts;
     },
@@ -40,6 +42,8 @@ export function getComments(pid) {
       if (api.debug) console.log(response);
       if (response.data === 'U200') {
         return 'fail';
+      } else if (response.data === 'G104') {
+        return 'notfound';
       }
       return response.data;
     },

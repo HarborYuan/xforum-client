@@ -45,7 +45,14 @@
     },
     // props: ['item'],
     mounted() {
-      this.$store.dispatch('FETCH_COMMENT_DATA', { pid: this.$route.params.pid });
+      this.$store.dispatch('FETCH_COMMENT_DATA', { pid: this.$route.params.pid }).then((response) => {
+        if (response === 'fail') {
+          this.$store.commit('LOGOUT');
+          this.$router.push('/');
+        } else if (response === 'notfound') {
+          this.$router.push('/404/');
+        }
+      });
     },
     computed: {
       item() {

@@ -10,10 +10,17 @@ import Avatar from 'vue-avatar'
         <span v-if="isLoggedIn">
           <Boardlink v-for="board in boards" v-bind="board"></Boardlink>
         </span>
-        <router-link v-if="!isLoggedIn" class="github" to="/signin">Sign In</router-link>
+        <a v-if="isLoggedIn" @click="logout" class="github">Logout</a>
+        <router-link v-if="!isLoggedIn" class="github" to="/signin/">Sign In</router-link>
+        <router-link v-if="isLoggedIn" class="github" :to="'/user/' + this.uid">Profile</router-link>
+        <router-link v-if="isLoggedIn" class="github" to="/message/">Message</router-link>
+
       </nav>
 
     </header>
+    <div v-if="error_flag">
+      <b-alert show variant="danger">Some fatal error happened</b-alert>
+    </div>
     <transition name="fade" mode="out-in">
       <router-view class="view"></router-view>
     </transition>
@@ -22,12 +29,15 @@ import Avatar from 'vue-avatar'
 
 <script>
   import Boardlink from './components/Boardlink';
+  import { logout } from './api/user';
 
   export default {
     name: 'app',
     components: { Boardlink },
     data() {
-      return {};
+      return {
+        error_flag: false,
+      };
     },
     computed: {
       isLoggedIn() {
@@ -36,10 +46,19 @@ import Avatar from 'vue-avatar'
       boards() {
         return this.$store.state.boards;
       },
+      uid() {
+        return this.$store.state.uid;
+      },
     },
-    methods: {},
+    methods: {
+      logout() {
+        logout().then(() => {
+          this.$store.commit('LOGOUT');
+          this.$router.push('/');
+        });
+      },
+    },
     beforeCreate() {
-      console.log('app');
       // checkState().then((response) => {
       //   if (this.debug) console.log(response);
       //   if (response === 'error') {
@@ -54,11 +73,14 @@ import Avatar from 'vue-avatar'
       // });
       this.$store.dispatch('FETCH_BOARD_DATA').then((response) => {
         if (response === 'refuse') {
-          if (!this.$route.path === '/' && !this.$route.path === '/signin/') {
-            this.$router.push('/');
+          if ((this.$route.path !== '/') && (this.$route.path !== '/signin/')) {
+            if (!this.$store.state.debug) this.$router.push('/');
           }
+        } else if (response === 'fail') {
+          this.error_flag = true;
         } else {
           this.$store.commit('LOGIN');
+          this.$store.dispatch('FETCH_SELF_INFO');
         }
       });
     },
@@ -96,7 +118,7 @@ import Avatar from 'vue-avatar'
       margin 0px auto
       padding 15px 5px
     a
-      color rgba(255, 255, 255, .8)
+      color color #fff
       line-height 24px
       transition color .15s ease
       display inline-block
@@ -120,7 +142,7 @@ import Avatar from 'vue-avatar'
     .github
       color #fff
       font-size .9em
-      margin 0
+      margin 0 1 0 0
       float right
 
   .logo

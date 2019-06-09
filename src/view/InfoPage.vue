@@ -1,6 +1,6 @@
 <template>
 
-  <b-jumbotron :header="this.userInfo.username" :lead="'Joined Since '+new Date(userInfo.createtime).getFullYear()">
+  <b-jumbotron style="border-radius: 0px" :header="this.userInfo.username" :lead="'Joined Since '+new Date(userInfo.createtime).getFullYear()">
     <div v-if="error_flag">
       <b-alert show variant="danger">Some fatal error happened</b-alert>
     </div>
@@ -8,7 +8,8 @@
     <p>UID： {{ this.userInfo.uid }}</p>
     <p>Age: {{ this.age }}</p>
     <p>Gender: {{ ['Male', 'Female', 'Other'][this.userInfo.gender] }}</p>
-    <a :href="'mailto:' + this.userInfo.email">📧Contact</a>
+    <p><a :href="'mailto:' + this.userInfo.email">📧Contact</a></p>
+    <p><router-link :to="'/conversation/' + this.userInfo.uid">Send Message</router-link></p>
   </b-jumbotron>
 
 </template>
@@ -35,7 +36,7 @@
     mounted() {
       getUserInfo(parseInt(this.$route.params.uid, 10)).then((response) => {
         if (response === 'USER_NOT_FOUND') {
-          // todo 需要添加404页面
+          this.$router.push('/404/');
         } else if (response === 'fail') {
           this.error_flag = true;
         } else {

@@ -1,11 +1,15 @@
 import { updateBoard, updatePosts, getComments } from '../api/post';
-
+// eslint-disable-next-line no-unused-vars
+import { getUserInfo, getMyUID } from '../api/user';
 
 export default {
   FETCH_BOARD_DATA: ({ commit }) => updateBoard().then((response) => {
-    if ((response === 'fail') || (response === 'error')) {
+    if (response === 'refuse') {
       commit('CLEAR_BOARDS');
       return 'refuse';
+    } else if (typeof response === 'string') {
+      commit('CLEAR_BOARDS');
+      return 'fail';
     }
     commit('SET_BOARDS', { boards: response });
     return 'success';
@@ -39,4 +43,11 @@ export default {
     commit('SET_POST', { post: response, pid });
     return 'success';
   }),
+  FETCH_SELF_INFO: ({ commit }) => getMyUID().then((response) => {
+    if ((response === 'fail') || (response === 'error')) {
+      return 'fail';
+    }
+    commit('SET_UID', { uid: response });
+    return 'success';
+  }).catch(() => 'error'),
 };

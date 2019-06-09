@@ -10,23 +10,14 @@ Vue.use(Vuex);
 export function createStore() {
   return new Vuex.Store({
     state: {
-      debug: true,
-      userInfo: {
-        username: '',
-        password: '',
-        email: '',
-        birthday: '',
-        avatarURL: '',
-      },
+      debug: false,
+      uid: null,
       boards: [{ name: 'Home', path: 'index' }],
       isLoggedIn: false,
       activeBoard: null,
       posts: {/* [pid]: post */},
       list: {
         index: [],
-        edu: [],
-        pe: [],
-        tech: [],
       },
       // commentList: {/* [pid]: comments */},
     },
