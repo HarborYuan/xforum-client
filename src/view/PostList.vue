@@ -16,7 +16,8 @@
 <!--      </div>-->
 <!--    </transition>-->
     <div style="margin-top: 20px;">
-      <input style="width: 89%;" v-model="content"><button @click="submitPost">Add New Post</button>
+      <b-form-textarea v-model="content"></b-form-textarea>
+      <b-button block variant="primary" @click="submitPost">Add New Post</b-button>
     </div>
     <div v-if="error_flag">
       <b-alert show variant="danger">Some fatal error happened</b-alert>
@@ -70,9 +71,13 @@
     },
     methods: {
       submitPost() {
+        if (this.content === '') {
+          return;
+        }
         sendPost(this.content, this.$route.params.board).then((response) => {
           if (response === 'success') {
-            this.$router.go(0);
+            this.content = '';
+            this.$store.dispatch('FETCH_POST_DATA', { type: this.$route.params.board });
           } else {
             this.error_flag = true;
           }

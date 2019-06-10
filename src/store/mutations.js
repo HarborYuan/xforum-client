@@ -20,12 +20,7 @@ export default {
   },
   CLEAR_POSTS: (state) => {
     // state.posts = {};
-    state.list = {
-      index: [],
-      edu: [],
-      pe: [],
-      tech: [],
-    };
+    state.list[state.activeBoard] = [];
   },
   SET_POSTS: (state, { posts }) => {
     if (state.debug) console.log(posts);
